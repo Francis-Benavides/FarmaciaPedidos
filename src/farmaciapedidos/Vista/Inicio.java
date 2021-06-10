@@ -5,6 +5,7 @@
  */
 package farmaciapedidos.Vista;
 
+import Class.confirmacionPedido;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 
@@ -19,17 +20,13 @@ public class Inicio extends javax.swing.JFrame {
      */
     public Inicio() {
         initComponents();
-        
+
         ButtonGroup grupo1 = new ButtonGroup();
         grupo1.add(RbtnCofarma);
         grupo1.add(RbtnEmpsephar);
         grupo1.add(RbtnCemefar);
-        
 
     }
-    
-    
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,8 +46,8 @@ public class Inicio extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtNombreM = new javax.swing.JTextField();
-        txtTipoM = new javax.swing.JTextField();
-        CboxMedicamento = new javax.swing.JComboBox<>();
+        txtCantidad = new javax.swing.JTextField();
+        CboxTipoM = new javax.swing.JComboBox<>();
         RbtnCofarma = new javax.swing.JRadioButton();
         RbtnEmpsephar = new javax.swing.JRadioButton();
         RbtnCemefar = new javax.swing.JRadioButton();
@@ -101,7 +98,7 @@ public class Inicio extends javax.swing.JFrame {
 
         jLabel6.setText("Sucursal");
 
-        CboxMedicamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un Medicamento", "analgésico", "analéptico", "anestésico", "antiácido", "antidepresivo", "antibióticos" }));
+        CboxTipoM.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un Medicamento", "analgésico", "analéptico", "anestésico", "antiácido", "antidepresivo", "antibióticos" }));
 
         RbtnCofarma.setText("Cofarma");
 
@@ -131,14 +128,14 @@ public class Inicio extends javax.swing.JFrame {
                         .addComponent(ChkPrincipal)
                         .addGap(18, 18, 18)
                         .addComponent(ChkSecundaria))
-                    .addComponent(txtTipoM, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(RbtnCofarma)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(RbtnEmpsephar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(RbtnCemefar))
-                    .addComponent(CboxMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CboxTipoM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNombreM, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(117, Short.MAX_VALUE))
         );
@@ -152,11 +149,11 @@ public class Inicio extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(CboxMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CboxTipoM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtTipoM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -250,20 +247,55 @@ public class Inicio extends javax.swing.JFrame {
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
         // TODO add your handling code here:
         txtNombreM.setText("");
-        txtTipoM.setText("");
-        CboxMedicamento.setSelectedItem("Seleccione un Medicamento");
+        txtCantidad.setText("");
+        CboxTipoM.setSelectedItem("Seleccione un Medicamento");
         ChkPrincipal.setSelected(false);
         ChkSecundaria.setSelected(false);
-        
-        
-        
+
+
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        ConfirmarPedido frm= new ConfirmarPedido();
-        frm.setVisible(true);
-        this.setVisible(false);
+        //Crear un nuevo objeto tipo confirmacionPedido
+        confirmacionPedido ventana2 = new confirmacionPedido();
+        //Obtener texto, tipo y cantidad del medicament
+        ventana2.txtNombreM = txtNombreM.getText();
+        ventana2.textoTipo = CboxTipoM.getSelectedItem().toString();
+        ventana2.textoCantidad = txtCantidad.getText();
+
+        //Radio butttons distribuidor
+        ventana2.textoDistribuidor = "";
+        if (RbtnCofarma.isSelected()) {
+            ventana2.textoDistribuidor = "Cofarma";
+        } else {
+            if (RbtnEmpsephar.isSelected()) {
+                ventana2.textoDistribuidor = "Empsephar";
+            } else {
+                if (RbtnCemefar.isSelected()) {
+                    ventana2.textoDistribuidor = "Cemefar";
+                }
+            }
+        }
+        //Check boxes
+        ventana2.textoSucursal = "";
+        if (chkPrincipal.isSelected() == true) {
+            ventana2.textoSucursal = "Calle de la Rosa n.28";
+        }
+        if (chkSecundario.isSelected() == true) {
+            ventana2.textoSucursal = "Calle Alcazabilla n. 3";
+        }
+        if (chkPrincipal.isSelected() == true && chkSecundario.isSelected() == true) {
+            ventana2.textoSucursal = "Calle de la Rosa n.28 y para la situada en Calle Alcazabilla n. 3";
+        }
+
+        if (chkPrincipal.isSelected() && !chkSecundario.isSelected()) {
+            ventana2.direccion = "Pedido al distribuidor Principal";
+        } else if (!chkPrincipal.isSelected() && chkSecundario.isSelected()) {
+            ventana2.direccion = "Pedido al distribuidor Secundario";
+        } else {
+            ventana2.direccion = "Pedido al distribuidor Principal y secundario";
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
@@ -307,7 +339,7 @@ public class Inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> CboxMedicamento;
+    private javax.swing.JComboBox<String> CboxTipoM;
     private javax.swing.JCheckBox ChkPrincipal;
     private javax.swing.JCheckBox ChkSecundaria;
     private javax.swing.JRadioButton RbtnCemefar;
@@ -325,7 +357,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtNombreM;
-    private javax.swing.JTextField txtTipoM;
     // End of variables declaration//GEN-END:variables
 }
