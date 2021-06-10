@@ -5,9 +5,9 @@
  */
 package farmaciapedidos.Vista;
 
-import Class.confirmacionPedido;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,7 +25,20 @@ public class Inicio extends javax.swing.JFrame {
         grupo1.add(RbtnCofarma);
         grupo1.add(RbtnEmpsephar);
         grupo1.add(RbtnCemefar);
+    }
 
+    public void LimpiarCampos() {
+        txtNombreM.setText("");
+        txtCantidad.setText("");
+        CboxTipoM.setSelectedItem("Seleccione un Medicamento");
+        ChkPrincipal.setSelected(false);
+        ChkSecundaria.setSelected(false);
+
+        ButtonGroup grupo1 = new ButtonGroup();
+        grupo1.add(RbtnCofarma);
+        grupo1.add(RbtnEmpsephar);
+        grupo1.add(RbtnCemefar);
+        grupo1.clearSelection();
     }
 
     /**
@@ -246,55 +259,78 @@ public class Inicio extends javax.swing.JFrame {
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
         // TODO add your handling code here:
-        txtNombreM.setText("");
-        txtCantidad.setText("");
-        CboxTipoM.setSelectedItem("Seleccione un Medicamento");
-        ChkPrincipal.setSelected(false);
-        ChkSecundaria.setSelected(false);
-
-
+        LimpiarCampos();
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         //Crear un nuevo objeto tipo confirmacionPedido
-        confirmacionPedido ventana2 = new confirmacionPedido();
+        ConfirmarPedido frmConfirmarP = new ConfirmarPedido();
         //Obtener texto, tipo y cantidad del medicament
-        ventana2.txtNombreM = txtNombreM.getText();
-        ventana2.textoTipo = CboxTipoM.getSelectedItem().toString();
-        ventana2.textoCantidad = txtCantidad.getText();
+        frmConfirmarP.textoMedicamento = txtNombreM.getText();
+        frmConfirmarP.textoTipo = CboxTipoM.getSelectedItem().toString();
+        frmConfirmarP.textoCantidad = txtCantidad.getText();
 
         //Radio butttons distribuidor
-        ventana2.textoDistribuidor = "";
+        frmConfirmarP.textoDistribuidor = "";
         if (RbtnCofarma.isSelected()) {
-            ventana2.textoDistribuidor = "Cofarma";
+            frmConfirmarP.textoDistribuidor = "Cofarma";
         } else {
             if (RbtnEmpsephar.isSelected()) {
-                ventana2.textoDistribuidor = "Empsephar";
+                frmConfirmarP.textoDistribuidor = "Empsephar";
             } else {
                 if (RbtnCemefar.isSelected()) {
-                    ventana2.textoDistribuidor = "Cemefar";
+                    frmConfirmarP.textoDistribuidor = "Cemefar";
                 }
             }
         }
         //Check boxes
-        ventana2.textoSucursal = "";
-        if (chkPrincipal.isSelected() == true) {
-            ventana2.textoSucursal = "Calle de la Rosa n.28";
+        frmConfirmarP.textoSucursal = "";
+        if (ChkPrincipal.isSelected() == true) {
+            frmConfirmarP.textoSucursal = "Sucursal Principal";
         }
-        if (chkSecundario.isSelected() == true) {
-            ventana2.textoSucursal = "Calle Alcazabilla n. 3";
+        if (ChkSecundaria.isSelected() == true) {
+            frmConfirmarP.textoSucursal = "Sucursal Secundaria";
         }
-        if (chkPrincipal.isSelected() == true && chkSecundario.isSelected() == true) {
-            ventana2.textoSucursal = "Calle de la Rosa n.28 y para la situada en Calle Alcazabilla n. 3";
+        if (ChkPrincipal.isSelected() == true && ChkSecundaria.isSelected() == true) {
+            frmConfirmarP.textoSucursal = "Sucursal Principal y Sucursal Secundaria";
         }
 
-        if (chkPrincipal.isSelected() && !chkSecundario.isSelected()) {
-            ventana2.direccion = "Pedido al distribuidor Principal";
-        } else if (!chkPrincipal.isSelected() && chkSecundario.isSelected()) {
-            ventana2.direccion = "Pedido al distribuidor Secundario";
+        if (ChkPrincipal.isSelected() && !ChkSecundaria.isSelected()) {
+            frmConfirmarP.direccion = "Pedido al distribuidor Principal";
+        } else if (!ChkPrincipal.isSelected() && ChkSecundaria.isSelected()) {
+            frmConfirmarP.direccion = "Pedido al distribuidor Secundario";
         } else {
-            ventana2.direccion = "Pedido al distribuidor Principal y secundario";
+            frmConfirmarP.direccion = "Pedido al distribuidor Principal y secundario";
+        }
+
+        boolean verificacion = true;
+        //Verificacion de datos
+        if (frmConfirmarP.textoMedicamento.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El nombre del medicamento no puede estar vacio");
+            verificacion = false;
+        }
+        if (frmConfirmarP.textoCantidad.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "La cantididad de producto no puede estar vacia");
+            verificacion = false;
+        }
+        if (Integer.parseInt(frmConfirmarP.textoCantidad) <= 0) {
+            JOptionPane.showMessageDialog(null, "La cantididad debe ser positiva");
+            verificacion = false;
+        }
+        if (frmConfirmarP.textoDistribuidor.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Tienes que seleccionar un distribuidor");
+            verificacion = false;
+        }
+        if (frmConfirmarP.textoSucursal.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Tienes que seleccionar una sucursal");
+            verificacion = false;
+        }
+
+        //Mostrar ventana 2 y ocultar ventana 1
+        if (verificacion == true) {
+            frmConfirmarP.setVisible(true);
+            this.setVisible(false);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

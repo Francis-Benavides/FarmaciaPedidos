@@ -2,8 +2,6 @@ package farmaciapedidos.Vista;
 
 import ConexionBD.BD;
 import Class.encoder;
-import Class.encoder;
-import Class.usuario;
 import Class.usuario;
 import java.awt.Color;
 import javax.swing.ImageIcon;

@@ -23,6 +23,16 @@ public class RegistroFrm extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
     }
 
+    public void LimpiarCampos() {
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtEmail.setText("");
+        txtDireccion.setText("");
+        txtUsername.setText("");
+        txtPassword.setText("");
+        txtPasswordConfirm.setText("");
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -253,6 +263,11 @@ public class RegistroFrm extends javax.swing.JFrame {
         });
 
         jButton3.setText("Salir");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -329,24 +344,21 @@ public class RegistroFrm extends javax.swing.JFrame {
                 && !txtPasswordConfirm.getText().trim().equals("")) {
             if (mValidaciones.ValidarEmail(txtEmail.getText().trim())) {
                 if (txtPassword.getText().trim().equals(txtPasswordConfirm.getText().trim())) {
-                    if (txtUsername.getText().length() == 10) {
-                        usuario mUsuario = new usuario();
-                        mUsuario.setNombre(txtNombre.getText().trim());
-                        mUsuario.setApellido(txtApellido.getText().trim());
-                        mUsuario.setEmail(txtEmail.getText().trim());
-                        mUsuario.setDirección(txtDireccion.getText().trim());
-                        mUsuario.setUsername(txtUsername.getText().trim());
-                        mUsuario.setPassword(mEncoder.ecnode(txtPassword.getText().trim()));
+                    usuario mUsuario = new usuario();
+                    mUsuario.setNombre(txtNombre.getText().trim());
+                    mUsuario.setApellido(txtApellido.getText().trim());
+                    mUsuario.setEmail(txtEmail.getText().trim());
+                    mUsuario.setDirección(txtDireccion.getText().trim());
+                    mUsuario.setUsername(txtUsername.getText().trim());
+                    mUsuario.setPassword(mEncoder.ecnode(txtPassword.getText().trim()));
 
-                        if (mBd.Conectar()) {
-                            if (mBd.AddUser(mUsuario)) {
-                                JOptionPane.showMessageDialog(null, "Usuario registrado correctamente!");
+                    if (mBd.Conectar()) {
+                        if (mBd.AddUser(mUsuario)) {
+                            JOptionPane.showMessageDialog(null, "Usuario registrado correctamente!");
+                            LimpiarCampos();
                             }
                         } else {
                             JOptionPane.showMessageDialog(null, "Error al conectar con BDD");
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Número de telefono inválido");
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
@@ -365,6 +377,11 @@ public class RegistroFrm extends javax.swing.JFrame {
         mLogin.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
