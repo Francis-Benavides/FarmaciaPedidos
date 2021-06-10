@@ -5,6 +5,11 @@
  */
 package farmaciapedidos.Vista;
 
+import Class.encoder;
+import Class.producto;
+import ConexionBD.BD;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author franc
@@ -14,8 +19,13 @@ public class ConfirmarPedido extends javax.swing.JFrame {
     /**
      * Creates new form ConfirmarPedido
      */
+    private BD mBd;
+    private encoder mEncoder;
+    
     public ConfirmarPedido() {
         initComponents();
+        mBd = new BD("medicamentosfarmacia", "root", "");
+        mEncoder = new encoder();
     }
 
     /**
@@ -339,6 +349,25 @@ public class ConfirmarPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         // TODO add your handling code here:
+        producto mProducto = new producto();
+
+        mProducto.setNombre(confMedicamento.getText().trim());
+        mProducto.setTipo(confTipo.getText().trim());
+        mProducto.setCantidad(confCantidad.getText().trim());
+        mProducto.setDistribuidor(confDistribuidor.getText().trim());
+        mProducto.setSucursal(confSucursal.getText().trim());
+
+        if (mBd.Conectar()) {
+            if (mBd.AddProducto(mProducto)) {
+                System.out.println("Pedido Enviado");
+                JOptionPane.showMessageDialog(null, "Pedido enviado correctamente!");
+                MenuMedicamentos frmM = new MenuMedicamentos();
+                frmM.setVisible(true);
+                this.dispose();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al conectar con BDD");
+        }
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     String textoMedicamento, textoTipo, textoCantidad, textoDistribuidor, textoSucursal, direccion;

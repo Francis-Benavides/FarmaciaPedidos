@@ -1,6 +1,7 @@
 package ConexionBD;
 
 import Class.usuario;
+import Class.producto;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -78,4 +79,19 @@ public class BD {
         return mUsuario;
     }
 
+    
+        public Boolean AddProducto(producto mProducto) {
+        try {
+            mStatement = mConection.createStatement();
+            mStatement.execute("INSERT INTO productos (nombre, tipo, cantidad, distribuidor, sucursal) "
+                    + " VALUES ('" + mProducto.getNombre() + "', '" + mProducto.getTipo()+ "','" + mProducto.getCantidad()
+                    + "','" + mProducto.getDistribuidor()+ "','" + mProducto.getSucursal()+ "')");
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+            return false;
+        }
+    }
+    
+    
 }
